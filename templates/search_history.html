@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">검색 기록</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">홈</a></li>
+            <li class="breadcrumb-item active">검색 기록</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-body">여기서는 서버에 저장된 검색 기록을 쉽게 학인할 수 있습니다.</div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-table mr-1"></i>이전 검색기록</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                        <tr>
+                            <th>검색 단어</th>
+                            <th>From</th>
+                            <th>Until</th>
+                            <th>인스타크램</th>
+                            <th>트위</th>
+                            <th>유튜브</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>검색 단어</th>
+                            <th>From</th>
+                            <th>Until</th>
+                            <th>인스타크램</th>
+                            <th>트위</th>
+                            <th>유튜브</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block importscripts %}
+<script src="../static/dist/js/datatable-history.js"></script>
+<script>
+    // update times
+    var dt = new Date();
+    var els = document.getElementsByClassName('card-footer small text-muted');
+    Array.from(els).forEach((el) => {
+        el.innerHTML = "Updated at: " + dt.toLocaleString();
+    }
+    );
+</script>
+{% endblock%}

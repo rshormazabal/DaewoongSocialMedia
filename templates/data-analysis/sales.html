@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="mt-4">매출액 분석</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">You can search and graph data about sales of products in the database,
+                just choose an ATC, area and product. RE WRITE IN KOREAN!
+            </li>
+        </ol>
+        <ol>
+            <div class="h-100">
+                <div class="btn-group mr-4">
+                    <button type="button" id="options-TCA" aria-expanded="false" aria-haspopup="true"
+                            role="button" data-toggle="dropdown" class="btn btn-success dropdown-toggle">
+                        TCA<span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu pre-scrollable" id="dropdown-TCA"></div>
+                </div>
+                <div class="btn-group mr-4">
+                    <button type="button" id="options-사업부" aria-expanded="false" aria-haspopup="true"
+                            role="button" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">
+                        사업부<span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu pre-scrollable" id="dropdown-사업부"></div>
+                </div>
+                <div class="btn-group mr-4">
+                    <button type="button" id="options-사무소" aria-expanded="false" aria-haspopup="true"
+                            role="button" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">
+                        사무소<span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu pre-scrollable" id="dropdown-사무소"></div>
+                </div>
+                <div class="btn-group mr-4">
+                    <button type="button" id="options-지역" aria-expanded="false" aria-haspopup="true"
+                            role="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+                        지역<span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu pre-scrollable" id="dropdown-지역"></div>
+                </div>
+                <div class="btn-group mr-4">
+                    <button type="button" id="options-제품" aria-expanded="false" aria-haspopup="true"
+                            role="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle">
+                        제품<span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu pre-scrollable" id="dropdown-제품"></div>
+                </div>
+
+            </div>
+        </ol>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Sales previous months</div>
+                    <div class="card-body">
+                        <canvas id="salesBarChart" width="100%" height="50"></canvas>
+                    </div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-chart-pie mr-1"></i>Sales share Top5 products</div>
+                    <div class="card-body">
+                        <canvas id="salesPieChart" width="100%" height="50"></canvas>
+                    </div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Sales trend previous months</div>
+            <div class="card-body">
+                <canvas id="salesLineChart" width="100%" height="30"></canvas>
+            </div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+    </div>
+{% endblock %}
+{% block importscripts %}
+    <script src="../static/dist/js/sales.js"></script>
+    <script src="../static/dist/js/salesGraphs.js"></script>
+    <script>
+    // update times
+    var dt = new Date();
+    var els = document.getElementsByClassName('card-footer small text-muted');
+    Array.from(els).forEach((el) => {
+        el.innerHTML = "Updated at: " + dt.toLocaleString();
+    }
+    );
+</script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block head %}
+
+    <!-- Icons font CSS-->
+    <link href="/static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="/static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="/static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/static/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="/static/dist/css/main.css" rel="stylesheet" media="all">
+{% endblock %}
+{% block content %}
+    <div class="page-wrapper bg-color-3 p-t-30 p-b-30">
+        <div class="card-body">
+            <div class="jumbotron">
+                <h1 class="display-4">
+                    <i class="fas fa-search" style="color: #3875d7"></i>
+                    대웅 소셜 미디어 모니터링 서비스</h1>
+                <hr class="my-4">
+                <p style="color: #004085">여기서 소시얼 미디어(인스타그램, 유튜브, 트위터) 트렌들을 쉽게 검섹할 수 있습니다!</p>
+            </div>
+            <div class="wrapper wrapper--w680">
+                <div class="card card-2">
+                    <ul class="tab-list">
+                        <li class="tab-list__item active">
+                            <a class="tab-list__link" href="#tab1" data-toggle="tab">SNS</a>
+                        </li>
+                        <li class="tab-list__item">
+                            <a class="tab-list__link" href="#tab2" data-toggle="tab">뉴스</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <form method="POST" action="{{ url_for('get_querry') }}">
+                                <div class="p-b-5">
+                                    <label class="checkbox-container m-r-45">인스타그램
+                                        <input type="checkbox" checked="checked" name="add-instagram">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="checkbox-container m-r-45">트위터
+                                        <input type="checkbox" checked="checked" name="add-twitter">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="checkbox-container m-r-45">유튜브
+                                        <input type="checkbox" checked="checked" name="add-youtube">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <label class="label">트위터 데이터 최대 휫수:</label>
+                                        <input class="input--style-1" type="text" name="max-data-twitter"
+                                                   placeholder="300" id="input-max-twitter">
+                                    </div>
+                                    <div class="input-group input-group-sm mb-3">
+                                        <label class="label">유튜브 동영상 최대 휫수:</label>
+                                        <input class="input--style-1" type="text" name="max-data-youtube"
+                                               placeholder="5" id="input-max-youtube">
+                                    </div>
+                                    <label class="checkbox-container m-r-45">최다 조회 동영상
+                                        <input type="checkbox" checked="checked" name="most-viewed">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="checkbox-container m-r-45">최신
+                                        <input type="checkbox" name="newest">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="input-group p-t-15">
+                                    <label class="label">검색 단어:</label>
+                                    <input class="input--style-1" type="text" name="word-search-sns" placeholder="예: 대웅"
+                                           required="required">
+                                </div>
+                                <div class="row row-space">
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <label class="label">From:</label>
+                                            <input class="input--style-1" type="text" name="from"
+                                                   placeholder="MM/DD/YYYY" id="input-start">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <label class="label">Until:</label>
+                                            <input class="input--style-1" type="text" name="until"
+                                                   placeholder="MM/DD/YYYY" id="input-end">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn-submit" type="submit">search</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <form method="POST" action="#">
+                                <div class="p-b-5">
+                                    <div class="input-group p-t-15">
+                                        <label class="label">검색 단어:</label>
+                                        <input class="input--style-1" type="text" name="word-search-news"
+                                               placeholder="예: 대웅"
+                                               required="required">
+                                    </div>
+                                    <div class="row row-space">
+                                        <div class="col-6">
+                                            <div class="input-group">
+                                                <label class="label">From:</label>
+                                                <input class="input--style-1" type="text" name="from-2"
+                                                       placeholder="MM/DD/YYYY" id="input-start-2">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="input-group">
+                                                <label class="label">Until:</label>
+                                                <input class="input--style-1" type="text" name="until-2"
+                                                       placeholder="MM/DD/YYYY" id="input-end-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn-submit" type="submit">검색</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block importscripts %}
+    <!-- Jquery JS-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="/static/vendor/select2/select2.min.js"></script>
+    <script src="/static/vendor/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/static/vendor/bootstrap-wizard/bootstrap.min.js"></script>
+    <script src="/static/vendor/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="/static/vendor/datepicker/moment.min.js"></script>
+    <script src="/static/vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="/static/dist/js/global.js"></script>
+
+{% endblock %}

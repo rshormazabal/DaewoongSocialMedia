@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Wordclouds</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Wordclouds</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-body">Wordclouds for every different social media platform.</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Twitter
+                    </div>
+                    <div class="card-body" id=wordcloud-instagram style="height: 450px;">
+                    </div>
+                    <div class="card-footer small text-muted"></div>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar mr-1"></i>
+                        Naver
+                    </div>
+                    <div class="card-body">
+                        <img src="../../static/data/instagram-2018-01-01.png" width="100%">
+                    </div>
+                    <div class="card-footer small text-muted"></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        Youtube
+                    </div>
+                    <div class="card-body">
+                        <img src="../../static/data/instagram-2018-01-01.png" width="100%">
+                    </div>
+                    <div class="card-footer small text-muted"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block importscripts %}
+<script src="//www.amcharts.com/lib/4/core.js"></script>
+<script src="//www.amcharts.com/lib/4/charts.js"></script>
+<script src="//www.amcharts.com/lib/4/plugins/wordCloud.js"></script>
+<script src="../static/dist/js/wordcloud.js"></script>
+<script>
+    // update times
+    var dt = new Date();
+    var els = document.getElementsByClassName('card-footer small text-muted');
+    Array.from(els).forEach((el) => {
+        el.innerHTML = "Updated at: " + dt.toLocaleString();
+    }
+    );
+</script>
+{% endblock%}
