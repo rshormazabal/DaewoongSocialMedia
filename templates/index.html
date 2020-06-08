@@ -1,147 +1,210 @@
-{% extends "layout.html" %}
-{% block head %}
-
-    <!-- Icons font CSS-->
-    <link href="/static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link href="/static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <!-- Font special for pages-->
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
-
-    <!-- Vendor CSS-->
-    <link href="/static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="/static/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="/static/dist/css/main.css" rel="stylesheet" media="all">
-{% endblock %}
-{% block content %}
-    <div class="page-wrapper bg-color-3 p-t-30 p-b-30">
-        <div class="card-body">
-            <div class="jumbotron">
-                <h1 class="display-4">
-                    <i class="fas fa-search" style="color: #3875d7"></i>
-                    대웅 소셜 미디어 모니터링 서비스</h1>
-                <hr class="my-4">
-                <p style="color: #004085">여기서 소시얼 미디어(인스타그램, 유튜브, 트위터) 트렌들을 쉽게 검섹할 수 있습니다!</p>
-            </div>
-            <div class="wrapper wrapper--w680">
-                <div class="card card-2">
-                    <ul class="tab-list">
-                        <li class="tab-list__item active">
-                            <a class="tab-list__link" href="#tab1" data-toggle="tab">SNS</a>
-                        </li>
-                        <li class="tab-list__item">
-                            <a class="tab-list__link" href="#tab2" data-toggle="tab">뉴스</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab1">
-                            <form method="POST" action="{{ url_for('get_querry') }}">
-                                <div class="p-b-5">
-                                    <label class="checkbox-container m-r-45">인스타그램
-                                        <input type="checkbox" checked="checked" name="add-instagram">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label class="checkbox-container m-r-45">트위터
-                                        <input type="checkbox" checked="checked" name="add-twitter">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label class="checkbox-container m-r-45">유튜브
-                                        <input type="checkbox" checked="checked" name="add-youtube">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <div class="input-group">
-                                        <label class="label">트위터 데이터 최대 휫수:</label>
-                                        <input class="input--style-1" type="text" name="max-data-twitter"
-                                                   placeholder="300" id="input-max-twitter">
-                                    </div>
-                                    <div class="input-group input-group-sm mb-3">
-                                        <label class="label">유튜브 동영상 최대 휫수:</label>
-                                        <input class="input--style-1" type="text" name="max-data-youtube"
-                                               placeholder="5" id="input-max-youtube">
-                                    </div>
-                                    <label class="checkbox-container m-r-45">최다 조회 동영상
-                                        <input type="checkbox" checked="checked" name="most-viewed">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label class="checkbox-container m-r-45">최신
-                                        <input type="checkbox" name="newest">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="input-group p-t-15">
-                                    <label class="label">검색 단어:</label>
-                                    <input class="input--style-1" type="text" name="word-search-sns" placeholder="예: 대웅"
-                                           required="required">
-                                </div>
-                                <div class="row row-space">
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <label class="label">From:</label>
-                                            <input class="input--style-1" type="text" name="from"
-                                                   placeholder="MM/DD/YYYY" id="input-start">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <label class="label">Until:</label>
-                                            <input class="input--style-1" type="text" name="until"
-                                                   placeholder="MM/DD/YYYY" id="input-end">
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn-submit" type="submit">search</button>
-                            </form>
-                        </div>
-                        <div class="tab-pane" id="tab2">
-                            <form method="POST" action="#">
-                                <div class="p-b-5">
-                                    <div class="input-group p-t-15">
-                                        <label class="label">검색 단어:</label>
-                                        <input class="input--style-1" type="text" name="word-search-news"
-                                               placeholder="예: 대웅"
-                                               required="required">
-                                    </div>
-                                    <div class="row row-space">
-                                        <div class="col-6">
-                                            <div class="input-group">
-                                                <label class="label">From:</label>
-                                                <input class="input--style-1" type="text" name="from-2"
-                                                       placeholder="MM/DD/YYYY" id="input-start-2">
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="input-group">
-                                                <label class="label">Until:</label>
-                                                <input class="input--style-1" type="text" name="until-2"
-                                                       placeholder="MM/DD/YYYY" id="input-end-2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn-submit" type="submit">검색</button>
-                            </form>
-                        </div>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Daewoong - Social media analytics</title>
+        <link href="../static/dist/css/styles.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="http://www.daewoong.com/">대웅제약</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
+            ><!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" action="{{ url_for('get_querry') }}" method="POST">
+                <div class="input-group">
+                    <input class="form-control" type="text" name='searchBar' placeholder="Word to search" aria-label="Search" aria-describedby="basic-addon2" />
+                    <input class="form-control" type="text" name='searchBar2' placeholder="From date 2020/01/01" aria-label="Search" aria-describedby="basic-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="../static/dist/login.html">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Main</div>
+                            <a class="nav-link" href="../../static/dist/index.html"
+                                ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Social media search</a
+                            >
+                            <div class="sb-sidenav-menu-heading">Data</div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
+                                ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Search history
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                            ></a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="../static/dist/layout-static.html">Static Navigation</a><a class="nav-link" href="../static/dist/layout-sidenav-light.html">Light Sidenav</a></nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"
+                                ><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                News
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                            ></a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth"
+                                        >Authentication
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                                    ></a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="../static/dist/login.html">Login</a><a class="nav-link" href="../static/dist/register.html">Register</a><a class="nav-link" href="../static/dist/password.html">Forgot Password</a></nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError"
+                                        >Error
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                                    ></a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="../static/dist/401.html">401 Page</a><a class="nav-link" href="../static/dist/404.html">404 Page</a><a class="nav-link" href="../static/dist/500.html">500 Page</a></nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Analytics</div>
+                            <a class="nav-link" href="../static/dist/charts.html"
+                                ><div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Charts</a
+                            ><a class="nav-link" href="../static/dist/tables.html"
+                                ><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Wordcloud</a
+                            >
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Social media analytics</div>
+                        Daewoong Pharmaceuticals
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Twitter</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Instagram</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Naver</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Youtube</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Word mentions timeline</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Montly trends</div>
+                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header"><i class="fas fa-table mr-1"></i>Raw data from platform</div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Text</th>
+                                                <th>Time</th>
+                                                <th>URL</th>
+                                                <th>Likes</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Text</th>
+                                                <th>Time</th>
+                                                <th>URL</th>
+                                                <th>Likes</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2019</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
-    </div>
-{% endblock %}
-{% block importscripts %}
-    <!-- Jquery JS-->
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <!-- Vendor JS-->
-    <script src="/static/vendor/select2/select2.min.js"></script>
-    <script src="/static/vendor/jquery-validate/jquery.validate.min.js"></script>
-    <script src="/static/vendor/bootstrap-wizard/bootstrap.min.js"></script>
-    <script src="/static/vendor/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <script src="/static/vendor/datepicker/moment.min.js"></script>
-    <script src="/static/vendor/datepicker/daterangepicker.js"></script>
-
-    <!-- Main JS-->
-    <script src="/static/dist/js/global.js"></script>
-
-{% endblock %}
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../static/dist/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="../static/dist/assets/demo/chart-area-demo.js"></script>
+        <script>
+            console.log("{{ data }}")
+        </script>
+        <script src="../static/dist/assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="../static/dist/assets/demo/datatables-demo.js"></script>
+    </body>
+</html>

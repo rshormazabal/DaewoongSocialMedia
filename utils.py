@@ -59,6 +59,7 @@ def captions_from_tag(tag,
                       PASSWORD='1991Rsehc@'):
     instagram = Instagram()
     instagram.with_credentials(ID, PASSWORD)
+    instagram.login()
 
     medias = instagram.get_medias_by_tag(tag, count=number, min_timestamp=begin_date)
 
@@ -291,76 +292,62 @@ def comments_from_video_id(youtube_id):
 
 def word_querry(querry_word,
                 begin_date,
-                check_boxes,
                 DEVELOPER_KEY='AIzaSyCfT4W9Ca7qa5MFvqm1TVvQPS06WEj8yIc',
                 youtube_order='viewCount',
-                youtube_max_videos=10,
-                twitter_max_messages=300):
-    begin_date = int(datetime.strptime(begin_date, '%m/%d/%Y').strftime("%s"))
-
-    data_instagram, data_twitter, data_youtube = [], [], []
-
-    if check_boxes[0] == 'on':
-        print("Fetching instagram data for '" + querry_word + "'")
-
-        # instagram#
-        data_instagram, _ = captions_from_tag(querry_word,
-                                              begin_date,
-                                              number=1000)
-        # avoid None, messages without any text
-        data_instagram = data_instagram[data_instagram['text'].apply(lambda x: isinstance(x, str))]
+                youtube_max_videos=10):
+    begin_date = int(datetime.strptime(begin_date, '%Y/%m/%d').strftime("%s"))
 
     # twitter#
-    if check_boxes[1] == 'on':
-        print("Fetching twitter data for '" + querry_word + "'")
-        data_twitter, _ = get_tweets(querry_word,
-                                     begin_date=date.fromtimestamp(begin_date),
-                                     limit = twitter_max_messages)
+    print("Fetching twitter data for '" + querry_word + "'")
+    data_twitter, _ = get_tweets(querry_word,
+                                 begin_date=date.fromtimestamp(begin_date))
+    print("Fetching instagram data for '" + querry_word + "'")
 
-    if check_boxes[2] == 'on':
-        print("Fetching youtube data for '" + querry_word + "' - top 10 most viewed videos")
+    # instagram#
+    data_instagram, _ = captions_from_tag(querry_word,
+                                          begin_date,
+                                          number=1000)
+    # avoid None, messages without any text
+    data_instagram = data_instagram[data_instagram['text'].apply(lambda x: isinstance(x, str))]
 
-        # youtube top 10 videos#
-        payload = {'part': 'snippet',
-                   'key': DEVELOPER_KEY,
-                   'order': youtube_order,
-                   'q': querry_word,
-                   'maxResults': youtube_max_videos}
-        l = requests.Session().get('https://www.googleapis.com/youtube/v3/search', params=payload)
-        resp_dict = json.loads(l.content)
+    print("Fetching youtube data for '" + querry_word + "' - top 10 most viewed videos")
 
-        # eliminate ids from channels or playlists
-        video_ids = []
-        for item in resp_dict['items']:
-            if 'videoId' in item['id'].keys():
-                video_ids.append(item['id']['videoId'])
+    # youtube top 10 videos#
+    payload = {'part': 'snippet',
+               'key': DEVELOPER_KEY,
+               'order': youtube_order,
+               'q': querry_word,
+               'maxResults': youtube_max_videos}
+    l = requests.Session().get('https://www.googleapis.com/youtube/v3/search', params=payload)
+    resp_dict = json.loads(l.content)
 
-        data_youtube = pd.DataFrame(columns=['text', 'time', 'author', 'votes'])
-        for video_id in video_ids:
-            data_youtube = data_youtube.append(comments_from_video_id(video_id), ignore_index=True)
+    # eliminate ids from channels or playlists
+    video_ids = []
+    for item in resp_dict['items']:
+        if 'videoId' in item['id'].keys():
+            video_ids.append(item['id']['videoId'])
+
+    data_youtube = pd.DataFrame(columns=['text', 'time', 'author', 'votes'])
+    for video_id in video_ids:
+        data_youtube = data_youtube.append(comments_from_video_id(video_id), ignore_index=True)
 
     dataframes_list = [data_twitter, data_instagram, data_youtube]
     # append only text comments for every different source
     text_list = []
-    if check_boxes[0] == 'on':
-        text_list.extend(data_instagram.text.to_list())
-    if check_boxes[1] == 'on':
-        text_list.extend(data_twitter.text.to_list())
-    if check_boxes[2] == 'on':
-        text_list.extend(data_youtube.text.to_list())
+    text_list.extend(data_twitter.text.to_list())
+    text_list.extend(data_instagram.text.to_list())
+    text_list.extend(data_youtube.text.to_list())
     print('{} number of messages scraped'.format(len(text_list)))
     return text_list, dataframes_list
 
 
-def get_keywords(data,
-                 add_stopwords=[],
-                 min_count=5,
-                 max_length=10,
-                 beta=0.85,
-                 max_iter=20,
-                 verbose=False):
-
-    list_of_texts = data.text.tolist()
+def create_wordcloud(list_of_words,
+                     add_stopwords=[],
+                     min_count=5,
+                     max_length=10,
+                     beta=0.85,
+                     max_iter=20,
+                     verbose=False):
     # load keywords from json file and create set
     with open('stopwords-ko.json') as json_file:
         stopwords = json.load(json_file)
@@ -369,22 +356,17 @@ def get_keywords(data,
     for word in add_stopwords:
         stopwords.add(word)
 
-    keywords = summarize_with_keywords(list_of_texts,
+    keywords = summarize_with_keywords(list_of_words,
                                        min_count=min_count,
                                        max_length=max_length,
                                        beta=beta,
                                        max_iter=max_iter,
                                        stopwords=stopwords,
                                        verbose=verbose)
-
-    return keywords
-
-
-def create_wordcloud(keywords, size=(800, 800)):
     # creating wordcloud
     wordcloud = WordCloud(font_path='NanumBarunGothic.ttf',
-                          width=size[0],
-                          height=size[1],
+                          width=800,
+                          height=800,
                           background_color="white")
 
     cloud = wordcloud.generate_from_frequencies(keywords)
@@ -393,7 +375,6 @@ def create_wordcloud(keywords, size=(800, 800)):
     plt.axis("off")
     plt.show()
     return wordcloud
-
 
 def save_wordclouds(dataframes,
                     begin_date,
@@ -415,3 +396,8 @@ def save_wordclouds(dataframes,
                                  verbose=verbose)
         cloud.to_file('./outputData/' + platform + '-' + begin_date + '.png')
 
+if __name__ == '__main__':
+    instagram = Instagram()
+    tags = instagram.search_tags_by_tag_name("임팩타민")
+    for tag in tags:
+        print(tag.name, tag.media_count)

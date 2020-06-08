@@ -2,7 +2,7 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-$.getJSON("/data/data_tags", function (json) {
+$.getJSON("/data_tags", function (json) {
   var labels = json.map(function(item) {
     return item.Tag;
   });
@@ -10,7 +10,7 @@ $.getJSON("/data/data_tags", function (json) {
     return item.Posts;
   });
 
-  // Bar Chart Example TODO: ORDER BY COUNT
+  // Bar Chart Example
   var ctx = document.getElementById("myBarChart");
   var myLineChart = new Chart(ctx, {
     type: 'horizontalBar',

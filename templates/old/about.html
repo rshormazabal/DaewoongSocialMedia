@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    {% extends "old/template.html" %}
+    {% block content %}
+
+    <h1> About </h1>
+    <p> Here write information about the sites scraped and the methods.</p>
+
+    <script type='text/javascript' src="{{ url_for('static', filename='js/tables.js') }}"></script>
+    {% endblock %}
+  </body>
+</html>
